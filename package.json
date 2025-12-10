@@ -1,0 +1,53 @@
+{
+  "name": "@easy-quote/api",
+  "version": "0.1.0",
+  "description": "API para gestão de citações",
+  "main": "dist/main.js",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "clean": "rimraf dist src/generated *.db",
+    "start": "node dist/main.js",
+    "dev": "cross-env NODE_ENV=development ts-node src/main.ts",
+    "prebuild": "run-s clean prisma:generate prisma:migrate:deploy",
+    "build": "tsc",
+    "postbuild": "ts-node ./postbuild.ts",
+    "test": "vitest",
+    "prisma:generate": "prisma generate",
+    "prisma:push": "prisma db push",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:studio": "prisma studio"
+  },
+  "keywords": [],
+  "author": "Milton Carlos Katoo <mckatoo@gmail.com> (https://github.com/mckatoo)",
+  "license": "MIT",
+  "packageManager": "pnpm@10.25.0",
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=10"
+  },
+  "dependencies": {
+    "@prisma/adapter-better-sqlite3": "^7.1.0",
+    "@prisma/client": "^7.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "multer": "^2.0.2"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^10.1.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^24.10.2",
+    "@types/supertest": "^6.0.3",
+    "cross-env": "^10.1.0",
+    "npm-run-all2": "^8.0.4",
+    "prisma": "^7.1.0",
+    "rimraf": "^6.1.2",
+    "supertest": "^7.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.15"
+  }
+}

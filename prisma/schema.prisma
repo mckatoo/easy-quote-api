@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Client {
+  id        Int       @id @default(autoincrement())
+  name      String
+  cpf       String?
+  rg        String?
+  cnpj      String?
+  addresses Address[]
+  vehicles  Vehicle[]
+  budgets   Budget[]
+  phones    Phone[]
+}
+
+model Address {
+  id       Int     @id @default(autoincrement())
+  // @Column({ length: 8, nullable: true })
+  cep      String?
+  street   String?
+  number   String?
+  district String?
+  city     String?
+  // @Column({ length: 2, nullable: true })
+  uf       String?
+  client   Client  @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId Int
+}
+
+model Vehicle {
+  id       Int       @id @default(autoincrement())
+  brand    String
+  model    String
+  plate    String?
+  year     Int?
+  client   Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId Int
+  services Service[]
+  budgets  Budget[]
+}
+
+model Phone {
+  id       Int    @id @default(autoincrement())
+  number   String
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId Int
+}
+
+model Budget {
+  id         Int       @id @default(autoincrement())
+  date       DateTime  @default(now())
+  /**
+   * Value in cents
+   */
+  value      Int
+  services   Service[]
+  vehicle    Vehicle   @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  client     Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId   Int
+  vehicleId  Int
+  receivedIn DateTime?
+}
+
+model Service {
+  id          Int     @id @default(autoincrement())
+  description String
+  vehicle     Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  budget      Budget  @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+  /**
+   * Value in cents
+   */
+  value       Int
+  budgetId    Int
+  vehicleId   Int
+}
