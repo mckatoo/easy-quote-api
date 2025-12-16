@@ -9,7 +9,7 @@
     "start": "node dist/main.js",
     "dev": "cross-env NODE_ENV=development ts-node src/main.ts",
     "prebuild": "run-s clean prisma:generate prisma:migrate:deploy",
-    "build": "tsc",
+    "build": "tsc --project tsconfig.build.json",
     "postbuild": "ts-node ./postbuild.ts",
     "test": "vitest",
     "prisma:generate": "prisma generate",
